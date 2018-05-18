@@ -1,5 +1,6 @@
 package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -26,9 +27,14 @@ import java.net.URL
 
 class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
 
+    private lateinit var factory: DeliveryDetailsFactoryViewModel
+
+    private lateinit var viewModel: DeliveryDetailsViewModel
+
     private lateinit var fragmentDeliveryDetailsBinding: FragmentDeliveryDetailsBinding
 
     private lateinit var googleMap: GoogleMap
+
     private lateinit var bundle: Deliveries
 
     companion object {
@@ -44,7 +50,9 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
         fragmentDeliveryDetailsBinding = DataBindingUtil
                 .inflate(
@@ -52,6 +60,12 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
                         R.layout.fragment_delivery_details,
                         container,
                         false)
+
+        bundle = arguments?.getParcelable(KEY_DELIVERY)!!
+
+        fragmentDeliveryDetailsBinding.delivery = bundle
+
+        initArchitecture()
 
         initMap()
 
@@ -64,22 +78,39 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
         // Let's make this google map is global var
         this.googleMap = googleMap
 
-        val marker = LatLng(bundle.location?.lat!!, bundle.location?.lng!!)
+        val marker = LatLng(
+                bundle.location?.lat!!,
+                bundle.location?.lng!!
+        )
 
         setCameraPosition(marker = marker)
         loadImage(marker = marker)
 
     }
 
+    private fun initArchitecture() {
+        factory = DeliveryDetailsFactoryViewModel(
+                application = activity!!.application
+        )
+
+        viewModel = ViewModelProviders
+                .of(this, factory)
+                .get(DeliveryDetailsViewModel::class.java)
+    }
+
     private fun initMap() {
-        val mMapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mMapFragment =
+                childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+
         mMapFragment.getMapAsync(this)
     }
 
     private fun loadImage(marker: LatLng) {
         val url = URL(bundle.imageUrl)
         Observable
-                .fromCallable({ BitmapFactory.decodeStream(url.openConnection().getInputStream()) })
+                .fromCallable({
+                    BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ bitmap ->
@@ -92,7 +123,13 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setCameraPosition(marker: LatLng) {
-        val cameraPosition = CameraPosition.builder().target(marker).zoom(14f).build()
+        val cameraPosition =
+                CameraPosition
+                        .builder()
+                        .target(marker)
+                        .zoom(14f)
+                        .build()
+
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 }
