@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.ItemDeliveryBinding
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 
 class DeliveriesRecyclerViewAdapter(private val context: Application) : RecyclerView.Adapter<CustomViewHolder>() {
 

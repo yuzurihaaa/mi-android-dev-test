@@ -1,21 +1,33 @@
-package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity
+package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.util.Log
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.api.MainActivityApi
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.interfaces.OnDeliveriesChange
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.api.DeliveriesApi
+import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.RetrofitRequest
 import io.reactivex.disposables.Disposable
 import retrofit2.Retrofit
-import java.util.*
+import java.util.ArrayList
+import javax.inject.Inject
 
-class MainActivityViewModel(application: Application, private val retrofit: Retrofit, private val onDeliveriesChange: OnDeliveriesChange) : AndroidViewModel(application) {
+class DeliveryFragmentViewModel(
+        application: Application,
+        private val onDeliveriesChange: OnDeliveriesChange) : AndroidViewModel(application) {
 
-    fun getDeliveries(): Disposable {
-        val api: MainActivityApi = retrofit.create(MainActivityApi::class.java)
+    @Inject
+    lateinit var retrofit: Retrofit
+
+    init {
+        (application as MyApplication).appComponent.inject(this)
+        getDeliveries()
+    }
+
+    private fun getDeliveries(): Disposable {
+        val api: DeliveriesApi = retrofit.create(DeliveriesApi::class.java)
         return RetrofitRequest(getApplication())
                 .makeJSONRequest(
                         api.getDeliveries(),
@@ -30,13 +42,15 @@ class MainActivityViewModel(application: Application, private val retrofit: Retr
                                     deliveries.add(Deliveries(`object`[i].description,
                                             `object`[i].imageUrl,
                                             `object`[i].location))
+
+                                    Log.e("delivery", `object`[i].imageUrl)
                                 }
 
                                 onDeliveriesChange.onSuccess(deliveries)
                             }
 
                             override fun onError(error: String?) {
-                                Log.e("onError", "error")
+                                Log.e("onError", error)
                             }
                         }
                 )
