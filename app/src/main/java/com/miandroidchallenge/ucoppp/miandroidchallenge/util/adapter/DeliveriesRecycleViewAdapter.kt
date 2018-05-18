@@ -9,7 +9,14 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.ItemDeliveryBinding
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 
-class DeliveriesRecyclerViewAdapter(private val context: Application) : RecyclerView.Adapter<CustomViewHolder>() {
+
+
+class DeliveriesRecyclerViewAdapter(private val context: Application, val callback: OnItemClickListener?) : RecyclerView.Adapter<CustomViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(delivery: Deliveries)
+    }
+
 
     private var deliveries: MutableList<Deliveries> = mutableListOf()
 
@@ -35,7 +42,7 @@ class DeliveriesRecyclerViewAdapter(private val context: Application) : Recycler
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.bind(deliveries[position])
+        holder.bind(deliveries[position], callback)
     }
 
     override fun getItemCount(): Int {
@@ -45,7 +52,10 @@ class DeliveriesRecyclerViewAdapter(private val context: Application) : Recycler
 
 class CustomViewHolder(private val binding: ItemDeliveryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(delivery: Deliveries) {
+    fun bind(delivery: Deliveries, callback: DeliveriesRecyclerViewAdapter.OnItemClickListener?) {
         binding.delivery = delivery
+        binding.deliveryParent.setOnClickListener {
+            callback?.onItemClick(delivery)
+        }
     }
 }

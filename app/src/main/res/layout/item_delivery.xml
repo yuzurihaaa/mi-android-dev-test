@@ -12,15 +12,19 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
         android:padding="16dp"
         android:paddingBottom="8dp">
 
         <LinearLayout
+            android:id="@+id/delivery_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:orientation="horizontal">
 
 
             <ImageView
