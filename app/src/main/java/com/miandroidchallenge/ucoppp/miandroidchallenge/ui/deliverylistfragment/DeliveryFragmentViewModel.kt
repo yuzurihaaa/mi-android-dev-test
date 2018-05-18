@@ -4,12 +4,16 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.util.Log
 import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
+import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDao
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.api.DeliveriesApi
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.RetrofitRequest
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import java.util.ArrayList
 import javax.inject.Inject
