@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.grapesnberries.curllogger.CurlLoggerInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.isConnected
 import dagger.Module
@@ -60,6 +61,7 @@ internal class ApiModule(var mBaseUrl: String, private val application: Applicat
     fun provideOkhttpClient(cache: Cache): OkHttpClient {
         val client = OkHttpClient.Builder()
         client.networkInterceptors().add(REWRITE_CACHE_CONTROL_INTERCEPTOR())
+        client.addInterceptor(CurlLoggerInterceptor())
         client.cache(cache)
         return client.build()
     }

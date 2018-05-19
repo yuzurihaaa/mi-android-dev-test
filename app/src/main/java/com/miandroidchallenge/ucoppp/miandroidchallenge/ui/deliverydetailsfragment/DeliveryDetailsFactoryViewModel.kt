@@ -3,6 +3,7 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragm
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.interfaces.OnLoadSuccess
 import javax.inject.Inject
 
 class DeliveryDetailsFactoryViewModel @Inject constructor(

@@ -4,6 +4,5 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 
 interface OnDeliveriesChange {
     fun onSuccess(deliveries: MutableList<Deliveries>)
-    fun onSaved()
-    fun onFailedSave(error: Any?)
+    fun onErrorLoading()
 }

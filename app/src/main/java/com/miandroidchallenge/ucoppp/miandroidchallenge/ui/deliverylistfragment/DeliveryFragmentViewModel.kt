@@ -2,6 +2,8 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
+import android.databinding.ObservableField
 import android.util.Log
 import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDao
@@ -24,14 +26,14 @@ class DeliveryFragmentViewModel(
         application: Application,
         private val onDeliveriesChange: OnDeliveriesChange) : AndroidViewModel(application) {
 
+    var isLoading = ObservableField<Boolean>(false)
+
+
     @Inject
     lateinit var retrofit: Retrofit
 
     @Inject
     lateinit var deliveriesDao: DeliveriesDao
-
-    @Inject
-    lateinit var deliveriesDatabase: DeliveriesDatabase
 
     init {
         (application as MyApplication).appComponent.inject(this)
@@ -45,10 +47,11 @@ class DeliveryFragmentViewModel(
                         api.getDeliveries(),
                         object : Listener<List<Deliveries>> {
                             override fun onPreRequest() {
-                                Log.e("onPreRequest", "onPreRequest")
+                                isLoading.set(true)
                             }
 
                             override fun onResponse(`object`: List<Deliveries>) {
+                                isLoading.set(false)
                                 val deliveries = ArrayList<Deliveries>()
                                 for (i in 0 until `object`.size) {
                                     deliveries.add(Deliveries(`object`[i].description,
@@ -68,41 +71,18 @@ class DeliveryFragmentViewModel(
                                     }).subscribeOn(Schedulers.io())
                                             .observeOn(Schedulers.io())
                                             .subscribe({
-                                                onDeliveriesChange.onSaved()
                                             }, { error ->
-                                                onDeliveriesChange.onFailedSave(error)
                                             })
-
-                                    Log.e("delivery", `object`[i].imageUrl)
                                 }
 
                                 onDeliveriesChange.onSuccess(deliveries)
                             }
 
                             override fun onError(error: String?) {
-//                                loadFromLocal()
+                                isLoading.set(false)
+                                onDeliveriesChange.onErrorLoading()
                             }
                         }
                 )
-    }
-
-    fun loadFromLocal() {
-        Observable.just(deliveriesDatabase)
-                .subscribeOn(Schedulers.io())
-                .subscribe { db: DeliveriesDatabase? ->
-                    val deliveries = ArrayList<Deliveries>()
-
-                    val deliveriesLocal = deliveriesDao.selectAll()
-
-                    deliveriesLocal.map {
-                        val location = Location(it.latitude, it.longitude, it.address)
-                        deliveries.add(Deliveries(
-                                description = it.description,
-                                imageUrl = it.imageUrl,
-                                location = location
-                        ))
-                    }
-                    onDeliveriesChange.onSuccess(deliveries)
-                }
     }
 }

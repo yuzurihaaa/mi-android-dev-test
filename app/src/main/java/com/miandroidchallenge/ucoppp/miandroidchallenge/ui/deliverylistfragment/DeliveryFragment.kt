@@ -1,11 +1,11 @@
 package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 
+import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,22 +17,14 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveryCallback
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.adapter.DeliveriesRecyclerViewAdapter
 
+
 class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewAdapter.OnItemClickListener {
+
     lateinit var onDeliveryCallback: OnDeliveryCallback
 
     companion object {
         fun newInstance(): DeliveryFragment = DeliveryFragment()
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnDeliveryCallback) {
-            onDeliveryCallback = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnDeliveryCallback")
-        }
-    }
-
 
     lateinit var fragmentDeliveryBinding: FragmentDeliveryBinding
 
@@ -42,6 +34,15 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
 
     private val deliveryAdapter by lazy {
         DeliveriesRecyclerViewAdapter(activity?.application!!, this)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnDeliveryCallback) {
+            onDeliveryCallback = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnDeliveryCallback")
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,11 +87,17 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
         }
     }
 
-    override fun onSaved() {
-        Log.e("onSaved", "onSaved")
+    override fun onErrorLoading() {
+        val alertDialog = AlertDialog.Builder(activity!!.application).create()
+        alertDialog.let(this::handleAlert)
+        alertDialog.show()
     }
 
-    override fun onFailedSave(error: Any?) {
-        Log.e("onFailedSave", "onFailedSave")
+    private fun handleAlert(alertDialog: AlertDialog) {
+        alertDialog.setTitle("Sorry!")
+        alertDialog.setMessage("We failed to get the data")
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialog, which ->
+            dialog.dismiss()
+        })
     }
 }

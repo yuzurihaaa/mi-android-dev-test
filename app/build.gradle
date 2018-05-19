@@ -10,7 +10,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.miandroidchallenge.ucoppp.miandroidchallenge"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -30,6 +30,7 @@ android {
 dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation 'com.github.grapesnberries:curlloggerinterceptor:0.1'
 
     //OkHttp
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp_version"
@@ -42,6 +43,7 @@ dependencies {
     // Dagger
     implementation "com.google.dagger:dagger:$rootProject.dagger_version"
     implementation "com.google.dagger:dagger-android:$rootProject.dagger_version"
+    implementation 'com.google.dagger:dagger-android-support:2.14.1'
     implementation 'com.android.support:support-v4:27.1.1'
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger_version"
@@ -66,6 +68,13 @@ dependencies {
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glide"
+
+    // Lottie
+    implementation 'com.airbnb.android:lottie:2.5.4'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
