@@ -13,12 +13,14 @@ data class DeliveriesDb(
         val delivery_id: String = UUID.randomUUID().toString(),
         @NonNull
         @ColumnInfo(name = "description")
-        val description: String,
+        val description: String?,
         @NonNull
         @ColumnInfo(name = "imageUrl")
-        val imageUrl: String,
+        val imageUrl: String?,
         @ColumnInfo(name = "latitude")
-        val latitude: String,
+        val latitude: Double?,
         @ColumnInfo(name = "longitude")
-        val longitude: String
+        val longitude: Double?,
+        @ColumnInfo(name = "address")
+        val address: String?
 )

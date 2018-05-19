@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.isConnected
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -21,18 +22,14 @@ interface Listener<in T> {
 
 
 @Singleton
-class RetrofitRequest(application: Application) {
-
-    var networkInfo: NetworkInfo? = (application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
-
-    fun isConnected(): Boolean = networkInfo != null && networkInfo!!.isConnected
+class RetrofitRequest(var application: Application) {
 
 
     fun <T> makeJSONRequest(request: Observable<T>, listener: Listener<T>?): Disposable {
 
         var networkError = ""
 
-        if (!isConnected()) {
+        if (!isConnected(application = application)) {
             networkError = "No internet connection"
         }
 

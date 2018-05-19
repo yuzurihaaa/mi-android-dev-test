@@ -3,6 +3,7 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.application
 import android.app.Activity
 import android.app.Application
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.ApiModule
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.DeliveriesDbModule
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -17,7 +18,12 @@ class MyApplication : Application(), HasActivityInjector {
         DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))
-                .apiModule(ApiModule("https://staging.massiveinfinity.com/api/"))
+                .apiModule(
+                        ApiModule(
+                                mBaseUrl = "https://staging.massiveinfinity.com/api/",
+                                application = this
+                        ))
+                .deliveriesDbModule(DeliveriesDbModule(this))
                 .build()
     }
 

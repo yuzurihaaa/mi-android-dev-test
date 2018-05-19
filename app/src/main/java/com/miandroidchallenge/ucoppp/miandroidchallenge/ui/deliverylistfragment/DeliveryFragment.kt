@@ -5,6 +5,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,6 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.adapter.DeliveriesRecyclerViewAdapter
 
 class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewAdapter.OnItemClickListener {
-
     lateinit var onDeliveryCallback: OnDeliveryCallback
 
     companion object {
@@ -81,6 +81,16 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
     }
 
     override fun onSuccess(deliveries: MutableList<Deliveries>) {
-        deliveryAdapter.addDeliveries(deliveries)
+        activity?.runOnUiThread {
+            deliveryAdapter.addDeliveries(deliveries)
+        }
+    }
+
+    override fun onSaved() {
+        Log.e("onSaved", "onSaved")
+    }
+
+    override fun onFailedSave(error: Any?) {
+        Log.e("onFailedSave", "onFailedSave")
     }
 }
