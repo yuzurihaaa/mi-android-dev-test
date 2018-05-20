@@ -2,22 +2,25 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.unselecteddetailsfragment.UnselectedDetailsFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.DeliveryDetailsFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.DeliveryFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveryCallback
+import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.unselecteddetailsfragment.UnselectedDetailsFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), OnDeliveryCallback {
 
     val DELIVERY_STATE = "delivery_state"
 
-    var tabletSize: Boolean = false
+    var isTablet: Boolean = false
 
-    var screenChangingId: Int = R.id.fragment_holder
+    private var screenChangingId: Int = R.id.fragment_list_holder
 
     var deliveries: Deliveries? = null
 
@@ -25,17 +28,19 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tabletSize = resources.getBoolean(R.bool.isTablet)
+        changeTitle(R.string.things_to_deliver)
 
-        if (tabletSize) {
+        isTablet = resources.getBoolean(R.bool.isTablet)
+
+        val delivery = savedInstanceState?.getParcelable<Deliveries>(DELIVERY_STATE)
+
+        if (isTablet) {
 
             screenChangingId = R.id.fragment_details_holder
 
             replaceFragment(R.id.fragment_list_holder, DeliveryFragment.newInstance())
 
-            if (savedInstanceState != null) {
-
-                val delivery = savedInstanceState.getParcelable<Deliveries>(DELIVERY_STATE)
+            if (savedInstanceState != null && delivery != null) {
 
                 replaceFragment(screenChangingId, DeliveryDetailsFragment.newInstance(delivery))
             } else {
@@ -44,17 +49,59 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
             }
 
         } else {
+            replaceFragment(R.id.fragment_list_holder, DeliveryFragment.newInstance())
+            if (savedInstanceState != null && delivery != null) {
 
-            screenChangingId = R.id.fragment_holder
+                replaceFragmentWithPop(R.id.fragment_list_holder, DeliveryDetailsFragment.newInstance(delivery))
+            }
+        }
 
-            replaceFragment(screenChangingId, DeliveryFragment.newInstance())
+        button_retry.setOnClickListener {
+            layout_no_internet.visibility = View.GONE
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragment_list_holder)
+            if (fragment is DeliveryFragment) {
+                (fragment as DeliveryFragment).callApi()
+            }
+
         }
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_list_holder)
+        if (fragment is DeliveryFragment) {
+            deliveries = null
+        }
+    }
+
+    fun changeTitle(title: Int) {
+        supportActionBar?.setTitle(title)
+    }
+
+    override fun onFailCallDelivery() {
+        layout_no_internet.visibility = View.VISIBLE
+        val alertDialog = AlertDialog.Builder(this).create()
+        alertDialog.let(this::handleAlert)
+        alertDialog.show()
+    }
+
+    private fun handleAlert(alertDialog: AlertDialog) {
+        alertDialog.setTitle("Sorry!")
+        alertDialog.setMessage("We failed to get the data")
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialog, which ->
+            dialog.dismiss()
+        })
+    }
+
     override fun onClickDelivery(delivery: Deliveries) {
         deliveries = delivery
-        replaceFragmentWithPop(screenChangingId, DeliveryDetailsFragment.newInstance(delivery))
+        if (isTablet) {
+            replaceFragment(screenChangingId, DeliveryDetailsFragment.newInstance(delivery))
+        } else {
+            changeTitle(R.string.delivery_details)
+            replaceFragmentWithPop(screenChangingId, DeliveryDetailsFragment.newInstance(delivery))
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

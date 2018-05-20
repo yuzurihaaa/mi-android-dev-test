@@ -1,6 +1,5 @@
 package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 
-import android.app.AlertDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -20,7 +19,7 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.util.adapter.DeliveriesR
 
 class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewAdapter.OnItemClickListener {
 
-    lateinit var onDeliveryCallback: OnDeliveryCallback
+    lateinit var callback: OnDeliveryCallback
 
     companion object {
         fun newInstance(): DeliveryFragment = DeliveryFragment()
@@ -39,7 +38,7 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnDeliveryCallback) {
-            onDeliveryCallback = context
+            callback = context
         } else {
             throw RuntimeException(context.toString() + " must implement OnDeliveryCallback")
         }
@@ -74,11 +73,17 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
 
         fragmentDeliveryBinding.adapter = deliveryAdapter
 
+        callApi()
+
         return fragmentDeliveryBinding.root
     }
 
+    fun callApi() {
+        viewModel.getDeliveries()
+    }
+
     override fun onItemClick(delivery: Deliveries) {
-        onDeliveryCallback.onClickDelivery(delivery)
+        callback.onClickDelivery(delivery)
     }
 
     override fun onSuccess(deliveries: MutableList<Deliveries>) {
@@ -88,16 +93,6 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
     }
 
     override fun onErrorLoading() {
-        val alertDialog = AlertDialog.Builder(activity!!.application).create()
-        alertDialog.let(this::handleAlert)
-        alertDialog.show()
-    }
-
-    private fun handleAlert(alertDialog: AlertDialog) {
-        alertDialog.setTitle("Sorry!")
-        alertDialog.setMessage("We failed to get the data")
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", { dialog, which ->
-            dialog.dismiss()
-        })
+        callback.onFailCallDelivery()
     }
 }

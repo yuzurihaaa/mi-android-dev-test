@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.FragmentDeliveryDetailsBinding
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.MainActivity
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.getImage
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.getImagePath
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.isConnected
@@ -82,6 +83,13 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
         return fragmentDeliveryDetailsBinding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (activity is MainActivity) {
+            (activity as MainActivity).changeTitle(R.string.things_to_deliver)
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         // Let's make this google map is global var
         this.googleMap = googleMap
@@ -122,7 +130,7 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
 
         Observable
                 .fromCallable({
-                    if(!isConnected(activity?.application!!)){
+                    if (!isConnected(activity?.application!!)) {
                         throw Exception("Load local please")
                     }
                     BitmapFactory.decodeStream(url.openConnection().getInputStream())

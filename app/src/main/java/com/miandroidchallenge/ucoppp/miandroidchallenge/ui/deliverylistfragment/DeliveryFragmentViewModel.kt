@@ -2,15 +2,11 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
 import android.databinding.ObservableField
-import android.util.Log
 import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDao
-import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDatabase
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDb
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
-import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Location
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.api.DeliveriesApi
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
@@ -37,10 +33,9 @@ class DeliveryFragmentViewModel(
 
     init {
         (application as MyApplication).appComponent.inject(this)
-        getDeliveries()
     }
 
-    private fun getDeliveries(): Disposable {
+    fun getDeliveries(): Disposable {
         val api: DeliveriesApi = retrofit.create(DeliveriesApi::class.java)
         return RetrofitRequest(getApplication())
                 .makeJSONRequest(

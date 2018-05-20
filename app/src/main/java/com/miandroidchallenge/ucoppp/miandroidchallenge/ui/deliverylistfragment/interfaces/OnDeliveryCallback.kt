@@ -4,4 +4,5 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 
 interface OnDeliveryCallback {
     fun onClickDelivery(delivery: Deliveries)
+    fun onFailCallDelivery()
 }
