@@ -5,8 +5,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import java.util.UUID;
-
 @Entity(tableName = "delivery")
 public class DeliveryDb {
     @PrimaryKey
@@ -26,7 +24,7 @@ public class DeliveryDb {
     @ColumnInfo(name = "address")
     private String address;
 
-    public DeliveryDb(@NonNull  String delivery_id, @NonNull String description, @NonNull String imageUrl, Double latitude, Double longitude, String address) {
+    public DeliveryDb(@NonNull String delivery_id, @NonNull String description, @NonNull String imageUrl, Double latitude, Double longitude, String address) {
         this.delivery_id = delivery_id;
         this.description = description;
         this.imageUrl = imageUrl;

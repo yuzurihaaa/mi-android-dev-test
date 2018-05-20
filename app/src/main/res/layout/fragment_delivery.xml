@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
         <variable
             name="viewmodel"
-            type="com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.DeliveryFragmentViewModel"/>
+            type="com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.DeliveryFragmentViewModel" />
 
         <variable
             name="adapter"
@@ -44,10 +44,10 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
-                android:visibility="@{viewmodel.isLoading.get() ? View.VISIBLE : View.GONE}"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/wolf_peek" />
