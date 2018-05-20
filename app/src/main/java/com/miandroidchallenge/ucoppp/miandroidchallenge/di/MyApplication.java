@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
 
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.ApiModuleV2;
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.DeliveriesDbModule;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -31,9 +34,13 @@ public class MyApplication extends Application
 
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
+                .apiModuleV2(new ApiModuleV2(
+                        "https://staging.massiveinfinity.com/api/",
+                        this
+                ))
+                .deliveriesDbModule(new DeliveriesDbModule(this))
                 .build();
     }
-
 
 
     @Override

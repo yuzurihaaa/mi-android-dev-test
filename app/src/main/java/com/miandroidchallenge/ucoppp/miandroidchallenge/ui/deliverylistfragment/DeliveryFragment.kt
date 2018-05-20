@@ -9,8 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
-import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.FragmentDeliveryBinding
+import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveryCallback

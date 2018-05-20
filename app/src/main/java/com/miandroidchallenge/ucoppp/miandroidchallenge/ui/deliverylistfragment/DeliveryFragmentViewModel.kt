@@ -3,9 +3,9 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableField
-import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDao
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDb
+import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.api.DeliveriesApi
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange

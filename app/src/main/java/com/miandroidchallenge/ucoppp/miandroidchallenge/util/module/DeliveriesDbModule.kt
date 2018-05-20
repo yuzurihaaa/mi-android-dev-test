@@ -1,7 +1,7 @@
 package com.miandroidchallenge.ucoppp.miandroidchallenge.util.module
 
-import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDatabase
+import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

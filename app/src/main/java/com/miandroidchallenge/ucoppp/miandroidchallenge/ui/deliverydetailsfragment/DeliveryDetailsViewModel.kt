@@ -4,7 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.graphics.Bitmap
 import android.util.Log
-import com.miandroidchallenge.ucoppp.miandroidchallenge.application.MyApplication
+import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.api.DeliveryDetailsApi
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.interfaces.OnLoadSuccess
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
