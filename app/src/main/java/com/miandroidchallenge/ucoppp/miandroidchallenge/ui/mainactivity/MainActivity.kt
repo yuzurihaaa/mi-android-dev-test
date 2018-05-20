@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.UnselectedDetailsFragment
+import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.unselecteddetailsfragment.UnselectedDetailsFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.DeliveryDetailsFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.DeliveryFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveryCallback

@@ -1,4 +1,4 @@
-package com.miandroidchallenge.ucoppp.miandroidchallenge.ui
+package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.unselecteddetailsfragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
