@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.FragmentDeliveryDetailsBinding
-import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.MainActivity
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.getImage
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.getImagePath
@@ -42,7 +42,7 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
 
-    private lateinit var bundle: Deliveries
+    private lateinit var bundle: DeliveriesModel
 
     private lateinit var marker: LatLng
 
@@ -50,7 +50,7 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
 
         const val KEY_DELIVERY = "delivery"
 
-        fun newInstance(delivery: Deliveries): DeliveryDetailsFragment {
+        fun newInstance(delivery: DeliveriesModel): DeliveryDetailsFragment {
             val fragment = DeliveryDetailsFragment()
             val bundle = Bundle()
             bundle.putParcelable(KEY_DELIVERY, delivery)

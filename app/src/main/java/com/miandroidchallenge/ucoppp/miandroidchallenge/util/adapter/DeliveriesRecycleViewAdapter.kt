@@ -7,20 +7,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.ItemDeliveryBinding
-import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel
 
 
 
 class DeliveriesRecyclerViewAdapter(private val context: Application, val callback: OnItemClickListener?) : RecyclerView.Adapter<CustomViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(delivery: Deliveries)
+        fun onItemClick(delivery: DeliveriesModel)
     }
 
 
-    private var deliveries: MutableList<Deliveries> = mutableListOf()
+    private var deliveries: MutableList<DeliveriesModel> = mutableListOf()
 
-    fun addDeliveries(deliveriesList: MutableList<Deliveries>) {
+    fun addDeliveries(deliveriesList: MutableList<DeliveriesModel>) {
         this.deliveries = deliveriesList
         notifyDataSetChanged()
     }
@@ -52,7 +52,7 @@ class DeliveriesRecyclerViewAdapter(private val context: Application, val callba
 
 class CustomViewHolder(private val binding: ItemDeliveryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(delivery: Deliveries, callback: DeliveriesRecyclerViewAdapter.OnItemClickListener?) {
+    fun bind(delivery: DeliveriesModel, callback: DeliveriesRecyclerViewAdapter.OnItemClickListener?) {
         binding.delivery = delivery
         binding.deliveryParent.setOnClickListener {
             callback?.onItemClick(delivery)

@@ -6,7 +6,7 @@
 
         <variable
             name="delivery"
-            type="com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries" />
+            type="com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="@{delivery.description}"
+                android:text="@{delivery.getDescription}"
                 android:textColor="@android:color/black"
                 tools:text="@tools:sample/first_names" />
 

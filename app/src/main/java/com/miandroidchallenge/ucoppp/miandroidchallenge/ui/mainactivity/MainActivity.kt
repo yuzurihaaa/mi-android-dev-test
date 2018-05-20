@@ -6,7 +6,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.miandroidchallenge.ucoppp.miandroidchallenge.R
-import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.DeliveryDetailsFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.DeliveryFragment
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveryCallback
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
 
     private var screenChangingId: Int = R.id.fragment_list_holder
 
-    var deliveries: Deliveries? = null
+    var deliveries: DeliveriesModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
 
         isTablet = resources.getBoolean(R.bool.isTablet)
 
-        val delivery = savedInstanceState?.getParcelable<Deliveries>(DELIVERY_STATE)
+        val delivery = savedInstanceState?.getParcelable<DeliveriesModel>(DELIVERY_STATE)
 
         if (isTablet) {
 
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
         })
     }
 
-    override fun onClickDelivery(delivery: Deliveries) {
+    override fun onClickDelivery(delivery: DeliveriesModel) {
         deliveries = delivery
         if (isTablet) {
             replaceFragment(screenChangingId, DeliveryDetailsFragment.newInstance(delivery))

@@ -3,12 +3,10 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragm
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.graphics.Bitmap
-import android.util.Log
 import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.api.DeliveryDetailsApi
-import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverydetailsfragment.interfaces.OnLoadSuccess
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.RetrofitRequest
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.RetrofitRequestV2
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -25,21 +23,27 @@ class DeliveryDetailsViewModel(
 
     fun getImage(imageUrl: String) {
         val api: DeliveryDetailsApi = retrofit.create(DeliveryDetailsApi::class.java)
-        RetrofitRequest(getApplication())
-                .makeJSONRequest(api.getDeliveriesImage(imageUrl),
-                        object : Listener<Bitmap> {
-                            override fun onPreRequest() {
-                                Log.e("onPreRequest", "onPreRequest")
+        RetrofitRequestV2(getApplication()).getInstance(getApplication())
+                .makeJonRequest(api.getDeliveriesImage(imageUrl),
+                        object : Listener<Bitmap>, RetrofitRequestV2.Listener<Bitmap> {
+                            override fun onError(error: String?) {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+
+                            override fun onError() {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }
 
                             override fun onResponse(`object`: Bitmap) {
-                                Log.e("onResponse", `object`.toString())
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }
 
-                            override fun onError(error: String?) {
-                                Log.e("onError", "onError")
+                            override fun onPreRequest() {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                             }
 
                         })
     }
 }
+
+

@@ -6,7 +6,7 @@ import android.databinding.ObservableField
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDao
 import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDb
 import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
-import com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.api.DeliveriesApi
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
@@ -40,16 +40,16 @@ class DeliveryFragmentViewModel(
         return RetrofitRequest(getApplication())
                 .makeJSONRequest(
                         api.getDeliveries(),
-                        object : Listener<List<Deliveries>> {
+                        object : Listener<List<DeliveriesModel>> {
                             override fun onPreRequest() {
                                 isLoading.set(true)
                             }
 
-                            override fun onResponse(`object`: List<Deliveries>) {
+                            override fun onResponse(`object`: List<DeliveriesModel>) {
                                 isLoading.set(false)
-                                val deliveries = ArrayList<Deliveries>()
+                                val deliveries = ArrayList<DeliveriesModel>()
                                 for (i in 0 until `object`.size) {
-                                    deliveries.add(Deliveries(`object`[i].description,
+                                    deliveries.add(DeliveriesModel(`object`[i].description,
                                             `object`[i].imageUrl,
                                             `object`[i].location))
 

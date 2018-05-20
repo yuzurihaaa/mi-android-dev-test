@@ -6,7 +6,7 @@
     <data>
         <variable
             name="delivery"
-            type="com.miandroidchallenge.ucoppp.miandroidchallenge.models.Deliveries"/>
+            type="com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
