@@ -14,6 +14,9 @@ public class DeliveriesModel implements Parcelable {
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl = "";
+    @SerializedName("location")
+    @Expose
+    private LocationModel location = null;
 
     public DeliveriesModel() {
     }
@@ -66,11 +69,6 @@ public class DeliveriesModel implements Parcelable {
     public void setLocation(LocationModel location) {
         this.location = location;
     }
-
-    @SerializedName("location")
-    @Expose
-    private LocationModel location = null;
-
 
     @Override
     public int describeContents() {

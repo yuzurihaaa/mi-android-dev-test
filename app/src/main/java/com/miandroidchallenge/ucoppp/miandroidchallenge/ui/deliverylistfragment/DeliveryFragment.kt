@@ -21,6 +21,7 @@ class DeliveryFragment : Fragment(), OnDeliveriesChange, DeliveriesRecyclerViewA
     lateinit var callback: OnDeliveryCallback
 
     companion object {
+        @JvmStatic
         fun newInstance(): DeliveryFragment = DeliveryFragment()
     }
 

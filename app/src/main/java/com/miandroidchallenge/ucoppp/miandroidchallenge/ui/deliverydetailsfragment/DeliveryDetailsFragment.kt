@@ -20,10 +20,7 @@ import com.miandroidchallenge.ucoppp.miandroidchallenge.R
 import com.miandroidchallenge.ucoppp.miandroidchallenge.databinding.FragmentDeliveryDetailsBinding
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.mainactivity.MainActivity
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.getImage
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.getImagePath
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.isConnected
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.saveFile
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -50,6 +47,7 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
 
         const val KEY_DELIVERY = "delivery"
 
+        @JvmStatic
         fun newInstance(delivery: DeliveriesModel): DeliveryDetailsFragment {
             val fragment = DeliveryDetailsFragment()
             val bundle = Bundle()
@@ -124,13 +122,13 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
     private fun loadImage() {
         val url = URL(bundle.imageUrl)
 
-        val image = getImagePath(app = activity?.application!!,
-                finalDirectory = MARKER_IMAGE_NAME
+        val image = ImageUtil.getImagePath(activity?.application!!,
+                MARKER_IMAGE_NAME
         )
 
         Observable
                 .fromCallable({
-                    if (!isConnected(activity?.application!!)) {
+                    if (!NetworkUtil.isConnected(activity?.application!!)) {
                         throw Exception("Load local please")
                     }
                     BitmapFactory.decodeStream(url.openConnection().getInputStream())
@@ -139,10 +137,10 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ bitmap ->
 
-                    saveFile(
-                            app = activity?.application!!,
-                            bitmap = bitmap,
-                            imageName = MARKER_IMAGE_NAME
+                    ImageUtil.saveFile(
+                            activity?.application!!,
+                            bitmap,
+                            MARKER_IMAGE_NAME
                     )
 
                     googleMap.addMarker(
@@ -155,7 +153,7 @@ class DeliveryDetailsFragment : Fragment(), OnMapReadyCallback {
                             MarkerOptions()
                                     .position(marker)
                                     .title(bundle.description)
-                                    .icon(BitmapDescriptorFactory.fromBitmap(getImage(image))))
+                                    .icon(BitmapDescriptorFactory.fromBitmap(ImageUtil.getImage(image))))
                 })
     }
 
