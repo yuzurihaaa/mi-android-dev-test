@@ -3,15 +3,15 @@ package com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableField
-import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDao
-import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveriesDb
+import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveryDao
+import com.miandroidchallenge.ucoppp.miandroidchallenge.database.DeliveryDb
 import com.miandroidchallenge.ucoppp.miandroidchallenge.di.MyApplication
 import com.miandroidchallenge.ucoppp.miandroidchallenge.models.DeliveriesModel
+import com.miandroidchallenge.ucoppp.miandroidchallenge.models.LocationModel
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.api.DeliveriesApi
 import com.miandroidchallenge.ucoppp.miandroidchallenge.ui.deliverylistfragment.interfaces.OnDeliveriesChange
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.Listener
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.api.RetrofitRequest
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -29,55 +29,61 @@ class DeliveryFragmentViewModel(
     lateinit var retrofit: Retrofit
 
     @Inject
-    lateinit var deliveriesDao: DeliveriesDao
+    lateinit var deliveriesDao: DeliveryDao
 
     init {
         (application as MyApplication).appComponent.inject(this)
     }
 
     fun getDeliveries(): Disposable {
+        isLoading.set(true)
         val api: DeliveriesApi = retrofit.create(DeliveriesApi::class.java)
-        return RetrofitRequest(getApplication())
-                .makeJSONRequest(
-                        api.getDeliveries(),
-                        object : Listener<List<DeliveriesModel>> {
-                            override fun onPreRequest() {
-                                isLoading.set(true)
-                            }
 
-                            override fun onResponse(`object`: List<DeliveriesModel>) {
-                                isLoading.set(false)
+        return api.getDeliveries()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ `object`: List<DeliveriesModel>? ->
+                    isLoading.set(false)
+                    val deliveries = ArrayList<DeliveriesModel>()
+                    for (i in 0 until `object`!!.size) {
+                        deliveries.add(DeliveriesModel(`object`[i].description,
+                                `object`[i].imageUrl,
+                                `object`[i].location))
+
+                        Observable.fromCallable({
+                            deliveriesDao.insertDelivery(DeliveryDb(
+                                    i.toString(),
+                                    `object`[i].description,
+                                    `object`[i].imageUrl,
+                                    `object`[i].location?.lat,
+                                    `object`[i].location?.lng,
+                                    `object`[i].location?.address
+
+                            ))
+
+                        }).subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .subscribe({
+                                }, { error ->
+                                })
+                    }
+
+                    onDeliveriesChange.onSuccess(deliveries)
+                }, {
+                    Observable.fromCallable({
+                        deliveriesDao.selectAll()
+
+                    }).subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .subscribe({ t ->
                                 val deliveries = ArrayList<DeliveriesModel>()
-                                for (i in 0 until `object`.size) {
-                                    deliveries.add(DeliveriesModel(`object`[i].description,
-                                            `object`[i].imageUrl,
-                                            `object`[i].location))
-
-                                    Observable.fromCallable({
-                                        deliveriesDao.insertDeliveries(DeliveriesDb(
-                                                description = `object`[i].description,
-                                                imageUrl = `object`[i].imageUrl,
-                                                latitude = `object`[i].location?.lat,
-                                                longitude = `object`[i].location?.lng,
-                                                address = `object`[i].location?.address
-
-                                        ))
-
-                                    }).subscribeOn(Schedulers.io())
-                                            .observeOn(Schedulers.io())
-                                            .subscribe({
-                                            }, { error ->
-                                            })
+                                t.map {
+                                    deliveries.add(DeliveriesModel(it.description, it.imageUrl, LocationModel(it.longitude, it.latitude, it.address)))
                                 }
-
                                 onDeliveriesChange.onSuccess(deliveries)
-                            }
-
-                            override fun onError(error: String?) {
-                                isLoading.set(false)
+                            }, { _ ->
                                 onDeliveriesChange.onErrorLoading()
-                            }
-                        }
-                )
+                            })
+                })
     }
 }

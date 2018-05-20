@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
         }
 
         button_retry.setOnClickListener {
-            layout_no_internet.visibility = View.GONE
             val fragment = supportFragmentManager.findFragmentById(R.id.fragment_list_holder)
             if (fragment is DeliveryFragment) {
                 (fragment as DeliveryFragment).callApi()
@@ -80,7 +79,6 @@ class MainActivity : AppCompatActivity(), OnDeliveryCallback {
     }
 
     override fun onFailCallDelivery() {
-        layout_no_internet.visibility = View.VISIBLE
         val alertDialog = AlertDialog.Builder(this).create()
         alertDialog.let(this::handleAlert)
         alertDialog.show()

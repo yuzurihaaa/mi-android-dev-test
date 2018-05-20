@@ -5,7 +5,7 @@ import android.app.Application;
 import android.app.Fragment;
 
 import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.ApiModuleV2;
-import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.DeliveriesDbModule;
+import com.miandroidchallenge.ucoppp.miandroidchallenge.util.module.DeliveryDbModule;
 
 import javax.inject.Inject;
 
@@ -38,7 +38,7 @@ public class MyApplication extends Application
                         "https://staging.massiveinfinity.com/api/",
                         this
                 ))
-                .deliveriesDbModule(new DeliveriesDbModule(this))
+                .deliveryDbModule(new DeliveryDbModule(this))
                 .build();
     }
 
